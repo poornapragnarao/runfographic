@@ -1,5 +1,6 @@
 import gpxdata
 import getcolors
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from itertools import accumulate
 
@@ -10,15 +11,19 @@ filename = str.split(filepath, '/')
 filename = filename[len(filename)-1]
 filename = str.split(filename,'.')
 
-NUM_COLORS = 25
+if filename[1] != 'gpx':
+    print('Not GPX file!')
+    exit()
 
+NUM_COLORS = 25
+M_TO_KM = 1000
 
 all_data = gpxdata.getalldata(filepath)
 cumulative_dist = list(accumulate(all_data['all_dist']))
-cumulative_dist = [x/1000 for x in cumulative_dist]
-all_data['graph_dist'] = [x/1000 for x in all_data['graph_dist']]
-all_data['split_dist'] = [x/1000 for x in all_data['split_dist']]
-full_dist = all_data['moving_dist']/1000
+cumulative_dist = [x/M_TO_KM for x in cumulative_dist]
+all_data['graph_dist'] = [x/M_TO_KM for x in all_data['graph_dist']]
+all_data['split_dist'] = [x/M_TO_KM for x in all_data['split_dist']]
+full_dist = all_data['moving_dist']/M_TO_KM
 average_pace = all_data['total_time']/full_dist
 average_pace_min = int(average_pace)
 average_pace_s = int((average_pace - average_pace_min)*60)
@@ -32,7 +37,7 @@ ally = [y+allmin for y in all_data['all_y']]
 
 
 # Get colors
-norm_paces, norm_cmap = getcolors.getcolorscmap('hsv', [1, 0.0], all_data['all_pace'])
+norm_paces, norm_cmap = getcolors.getcolorscmap('hsv', [1.0, 0.0], all_data['all_pace'])
 
 
 # Create visualisations
@@ -41,7 +46,8 @@ track_plt, ax = plt.subplots()#(1, 1, 1, facecolor='b') # nrows, ncols, index
 plt.axis('off')
 
 # Draw all GPS points
-plt.scatter(allx,ally,s=5,c=norm_paces,cmap=norm_cmap)
+#norm = mpl.colors.Normalize(vmin=min(norm_paces), vmax=max(norm_paces))
+sc_plot = plt.scatter(allx,ally,s=5,c=norm_paces,cmap=norm_cmap)#, norm=norm)#, 
 
 # Draw start and end points
 plt.scatter(allx[0],ally[0], s=25,c='white')
@@ -49,6 +55,16 @@ plt.scatter(allx[0],ally[0], s=12,c=norm_cmap.colors[0])
 plt.scatter(allx[-1],ally[-1], s=25,c='white')
 plt.scatter(allx[-1],ally[-1], s=12,c=norm_cmap.colors[-1])
 ax.set_aspect('equal')
+ax.set_facecolor('grey')
+# Draw the colorbar
+# legend1 = ax.legend(*sc_plot.legend_elements(),
+#                     loc="right", title="Speed")
+# ax.add_artist(legend1)
+# cbar = plt.colorbar(sc_plot, aspect=50)
+# plt.axis('off')
+# #cbar.ax.set_yticklabels(['fast','','','','slow'])
+# cbar.ax.set_axis_off()
+
 
 # Stats display at bottom
 string1 = str(average_pace_min)+":"+ "%0*d" % (2,average_pace_s) + 'min/km'
