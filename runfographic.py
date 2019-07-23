@@ -5,8 +5,16 @@ import matplotlib.pyplot as plt
 from itertools import accumulate
 
 import numpy as np
+import argparse
 
-filepath = 'D:/dev/gpx-parse/activities/ktm.gpx'
+parser = argparse.ArgumentParser()
+parser.add_argument("-f", help='filepath of the GPX file', type=str)
+parser.add_argument("-c", help='color map entered as string. See matplotlib colormaps for options.', default='hsv', type=str)
+args = parser.parse_args()
+color_map = args.c
+
+filepath = args.f
+print('path is - ' + filepath)
 filename = str.split(filepath, '/')
 filename = filename[len(filename)-1]
 filename = str.split(filename,'.')
@@ -37,7 +45,7 @@ ally = [y+allmin for y in all_data['all_y']]
 
 
 # Get colors
-norm_paces, norm_cmap = getcolors.getcolorscmap('hsv', [1.0, 0.0], all_data['all_pace'])
+norm_paces, norm_cmap = getcolors.getcolorscmap(color_map, [1.0, 0.0], all_data['all_pace'])
 
 
 # Create visualisations
@@ -56,15 +64,6 @@ plt.scatter(allx[-1],ally[-1], s=25,c='white')
 plt.scatter(allx[-1],ally[-1], s=12,c=norm_cmap.colors[-1])
 ax.set_aspect('equal')
 ax.set_facecolor('grey')
-# Draw the colorbar
-# legend1 = ax.legend(*sc_plot.legend_elements(),
-#                     loc="right", title="Speed")
-# ax.add_artist(legend1)
-# cbar = plt.colorbar(sc_plot, aspect=50)
-# plt.axis('off')
-# #cbar.ax.set_yticklabels(['fast','','','','slow'])
-# cbar.ax.set_axis_off()
-
 
 # Stats display at bottom
 string1 = str(average_pace_min)+":"+ "%0*d" % (2,average_pace_s) + 'min/km'
@@ -136,7 +135,7 @@ plt.tight_layout()
 
 # Save the figure
 plt.savefig(filename[0]+'_graphs.png',edgecolor='white',dpi=400)
-print('Saved to ' + filename[0] + '.png')
+print('Saved to ' + filename[0]+'_graphs.png')
 
 # Show the figures
 graph_plt.show()
