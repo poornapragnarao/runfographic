@@ -58,10 +58,10 @@ plt.axis('off')
 sc_plot = plt.scatter(allx,ally,s=5,c=norm_paces,cmap=norm_cmap)#, norm=norm)#, 
 
 # Draw start and end points
-plt.scatter(allx[0],ally[0], s=25,c='white')
-plt.scatter(allx[0],ally[0], s=12,c=norm_cmap.colors[0])
-plt.scatter(allx[-1],ally[-1], s=25,c='white')
-plt.scatter(allx[-1],ally[-1], s=12,c=norm_cmap.colors[-1])
+plt.scatter(allx[0],ally[0], s=25,c=['white'])
+plt.scatter(allx[0],ally[0], s=12,c=[norm_cmap.colors[0]])
+plt.scatter(allx[-1],ally[-1], s=25,c=['white'])
+plt.scatter(allx[-1],ally[-1], s=12,c=[norm_cmap.colors[-1]])
 ax.set_aspect('equal')
 ax.set_facecolor('grey')
 
