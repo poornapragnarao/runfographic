@@ -3,7 +3,6 @@ import gpxpy.gpx
 import math
 
 DIST_BETWEEN_PACE = 100 #metres
-filepath = 'D:/dev/gpx-parse/activities/ktm.gpx'
 r = 6371000 # meters
 MINUTES_IN_HOUR = 60
 SECONDS_IN_MINUTE = 60
@@ -103,7 +102,7 @@ def getalldata(filepath):
                             if 'hr' in child.tag:
                                 all_hr.append(int(child.text))
 
-    total_time = (moving_time+stopped_time)/60#get_time_diff(start_point, end_point, 'min')
+    total_time = (moving_time+stopped_time)/SECONDS_IN_MINUTE#get_time_diff(start_point, end_point, 'min')
     ret_dict = {'all_pace':all_pace,'all_elev':all_elev,'all_hr':all_hr, 'all_dist':dist_bw_pts,
             'graph_speed':graph_speed, 'graph_dist':graph_dist,
             'split_pace':split_pace,'split_dist':split_dist, 'all_x':all_points_x,'all_y':all_points_y,'total_time':total_time,
