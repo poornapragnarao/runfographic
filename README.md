@@ -16,3 +16,8 @@ Similar visualisations can be done in Runtastic and Nike Run App. In Runfographi
 ## Usage:
 
 python runfographic.py -f 'filepath to gpx file' -c 'colormap as string'
+
+## Sample path:
+The below path was created using 'viridis' colormap - 
+
+![Sample_Path](https://github.com/sigma--/runfographic/blob/master/sample-path.png)
